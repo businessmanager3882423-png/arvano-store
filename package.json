@@ -1,0 +1,16 @@
+
+{
+  "name": "arvano-store",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
