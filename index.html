@@ -1,573 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b16">
-<title>ARVANO — Premium Store</title>
-<style>
-:root{
-  color-scheme:dark;
-  --bg:#070914;--panel:#10162a;--card:#111b31;
-  --line:#293858;--text:#f4f6ff;--muted:#9ba8c4;
-  --blue:#3988ff;--purple:#9b5cff;--cyan:#42d9ed;
-  --green:#4ce0a2;--red:#ff668d;
-}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#111c3b 0%,var(--bg) 48%);
- color:var(--text);font:15px/1.55 Inter,system-ui,Arial,sans-serif}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-a{color:var(--cyan);text-decoration:none}
-.hidden{display:none!important}
-.wrap{max-width:1440px;margin:auto;padding:0 22px}
-header{position:sticky;top:0;z-index:20;background:#080b16ed;
- backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-.nav{min-height:76px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.logo{font-size:23px;font-weight:900;letter-spacing:2px;
- background:linear-gradient(90deg,#fff,#86aaff,#bd81ff);
- -webkit-background-clip:text;color:transparent}
-nav{display:flex;gap:19px;align-items:center}
-nav button,.plain{background:none;border:0;color:#c6d1e9}
-.navsearch{flex:1;min-width:160px}
-input,select,textarea{width:100%;padding:12px 14px;background:#0b1224;
- border:1px solid var(--line);border-radius:11px;color:var(--text);outline:none}
-input:focus,select:focus,textarea:focus{border-color:var(--blue)}
-.btn{border:1px solid #5267a2;background:#151d38;color:white;
- padding:11px 16px;border-radius:11px;transition:.2s}
-.btn:hover{border-color:#a17cff;box-shadow:0 0 20px #6d4cff35;transform:translateY(-1px)}
-.primary{border:0;background:linear-gradient(110deg,#8b42ff,#327eff)}
-.hero{margin:30px 0;padding:clamp(25px,5vw,65px);
- border:1px solid #384a83;border-radius:25px;overflow:hidden;
- background:radial-gradient(ellipse at 80% 25%,#4d27a85c,transparent 48%),
- linear-gradient(120deg,#101a39,#0a1022 70%);position:relative}
-.hero:after{content:"";position:absolute;width:260px;height:260px;
- right:-90px;bottom:-130px;border-radius:50%;border:1px solid #866aff77;
- box-shadow:0 0 80px #6248ff2c;pointer-events:none}
-.eyebrow{color:#83baff;letter-spacing:2px;font-size:12px;font-weight:800}
-h1{font-size:clamp(35px,5.3vw,68px);line-height:1.08;letter-spacing:-2px;margin:15px 0}
-.gradient{background:linear-gradient(90deg,#4de4f0,#7da2ff,#bd83ff);
- -webkit-background-clip:text;color:transparent}
-.muted{color:var(--muted)}
-.hero p{max-width:550px;color:#b5c2dc}
-.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:30px 0 17px}
-h2{font-size:22px;margin:0}
-.categories{display:flex;gap:10px;overflow-x:auto;padding:3px 0 12px}
-.chip{white-space:nowrap;background:#10182d;border:1px solid var(--line);
- color:#cbd8f2;border-radius:30px;padding:9px 15px}
-.chip.active{border-color:#8a68ff;background:#34215e}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
-.product{min-width:0;overflow:hidden;background:linear-gradient(145deg,#131d33,#0c1222);
- border:1px solid #263757;border-radius:17px;transition:.25s}
-.product:hover{transform:translateY(-4px);border-color:#6f68d8;box-shadow:0 12px 35px #0006}
-.product img{width:100%;aspect-ratio:1.12;object-fit:cover;background:#0b1222}
-.productbody{padding:14px}
-.productname{font-weight:700;min-height:44px}
-.price{color:#9cbcff;font-weight:800;font-size:18px;margin:8px 0}
-.tag{display:inline-block;background:#142d31;color:var(--green);
- border:1px solid #285c54;padding:3px 7px;border-radius:6px;font-size:11px}
-.productactions{display:flex;gap:8px;margin-top:12px}
-.productactions button{flex:1;padding:9px 6px}
-.panel{background:linear-gradient(145deg,#111a30,#0b1020);
- border:1px solid var(--line);border-radius:17px;padding:20px;margin:20px 0}
-.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.field{display:flex;flex-direction:column;gap:6px}
-.field.full{grid-column:1/-1}
-label{font-size:13px;color:#b5c3df}
-.notice{padding:12px 14px;border:1px solid #314568;border-radius:10px;
- background:#101b31;color:#c3d5f5;margin:12px 0}
-.status{color:#9fbcff;font-weight:700}
-.rowitem{display:flex;justify-content:space-between;align-items:center;
- gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
-.rowitem:last-child{border-bottom:0}
-footer{border-top:1px solid var(--line);margin-top:55px;padding:30px 0;color:var(--muted)}
-.bottomnav{display:none}
-#toast{position:fixed;z-index:100;bottom:22px;left:50%;transform:translateX(-50%);
- background:#172545;border:1px solid #6076ad;border-radius:12px;padding:12px 18px;
- box-shadow:0 10px 40px #0009;max-width:90%;text-align:center}
-table{width:100%;border-collapse:collapse;min-width:600px}
-th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}
-.tablewrap{overflow:auto}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}
- nav{gap:10px}}
-@media(max-width:680px){
- .wrap{padding:0 13px}.nav{gap:10px;padding:12px 0}
- .logo{font-size:20px}nav{order:3;width:100%;justify-content:space-between}
- .navsearch{order:4;flex-basis:100%}.navsearch input{padding:10px}
- .hero{margin:18px 0;padding:25px 20px;border-radius:18px}
- h1{letter-spacing:-1px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .productbody{padding:10px}.productname{font-size:13px;min-height:40px}
- .price{font-size:16px}.productactions{flex-direction:column}
- .productactions button{width:100%}.fields{grid-template-columns:1fr}
- .field.full{grid-column:auto}.panel{padding:14px}
- .bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:25;
- justify-content:space-around;padding:10px 3px calc(10px + env(safe-area-inset-bottom));
- background:#080b16f5;border-top:1px solid var(--line)}
- .bottomnav button{border:0;background:none;color:#c5d2ed;font-size:12px}
- footer{padding-bottom:85px}.sectionhead{align-items:flex-start}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b16">
+  <title>ARVANO | Premium Store</title>
+  <meta name="description" content="Shop the ARVANO premium collection.">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<header>
- <div class="wrap nav">
-  <a href="#" class="logo" onclick="showPage('home');return false">△ ARVANO</a>
-  <nav>
-   <button onclick="showPage('home')">Home</button>
-   <button onclick="showPage('shop')">Shop</button>
-   <button onclick="showPage('orders')">My Orders</button>
-   <button onclick="showPage('support')">Support</button>
-  </nav>
-  <div class="navsearch"><input id="search" placeholder="Search products..." oninput="renderProducts()"></div>
-  <button class="btn" onclick="showPage('cart')">Cart <span id="cartCount">0</span></button>
-  <button class="btn" id="authButton" onclick="showPage('account')">Sign in</button>
- </div>
-</header>
+  <header class="topbar">
+    <a href="#" class="brand" onclick="showPage('home');return false">ARVANO<span>.</span></a>
+    <nav>
+      <button onclick="showPage('home')">Home</button>
+      <button onclick="showPage('shop')">Shop</button>
+      <button onclick="showPage('orders')">My orders</button>
+      <button onclick="showPage('support')">Support</button>
+      <button onclick="showPage('cart')">Cart <b id="cartCount">0</b></button>
+      <button id="accountButton" class="primary" onclick="showPage('account')">Sign in</button>
+    </nav>
+  </header>
 
-<main class="wrap">
- <section id="homePage">
-  <div class="hero">
-   <div class="eyebrow">✦ WELCOME TO ARVANO</div>
-   <h1>Premium Products.<br><span class="gradient">Better Lifestyle.</span></h1>
-   <p>Discover your next favourite. Explore our collections, find exclusive deals and enjoy a smarter shopping experience.</p>
-   <button class="btn primary" onclick="showPage('shop')">Explore Collection ↗</button>
-  </div>
-  <div class="sectionhead"><h2>Explore Categories</h2></div>
-  <div class="categories" id="categories"></div>
-  <div class="sectionhead"><h2>Featured Products</h2><button class="plain" onclick="showPage('shop')">View all →</button></div>
-  <div id="featured" class="grid"></div>
- </section>
+  <div id="notice" class="notice hidden"></div>
 
- <section id="shopPage" class="hidden">
-  <div class="sectionhead"><div><div class="eyebrow">ARVANO COLLECTIONS</div><h2>Discover Products</h2></div>
-   <select id="sort" style="max-width:180px" onchange="renderProducts()">
-    <option value="featured">Featured</option><option value="low">Price: low to high</option>
-    <option value="high">Price: high to low</option>
-   </select>
-  </div>
-  <div class="categories" id="shopCategories"></div>
-  <div id="products" class="grid"></div>
- </section>
+  <main>
+    <section id="homePage" class="page">
+      <div class="hero">
+        <div>
+          <span class="eyebrow">THE ARVANO COLLECTION</span>
+          <h1>Make every choice <span>exceptional.</span></h1>
+          <p>Discover a curated collection with a premium shopping experience, secure accounts and convenient order tracking.</p>
+          <button class="primary" onclick="showPage('shop')">Explore collection ↗</button>
+        </div>
+        <div class="hero-art"><div class="hero-card"><small>ARVANO / SELECTED</small><strong>A<span>.</span></strong><small>DISCOVER SOMETHING EXCEPTIONAL</small></div></div>
+      </div>
+      <div class="heading"><div><span class="eyebrow">HANDPICKED FOR YOU</span><h2>Featured products</h2></div><button onclick="showPage('shop')">View all ↗</button></div>
+      <div id="featuredProducts" class="products"></div>
+    </section>
 
- <section id="accountPage" class="hidden">
-  <div class="sectionhead"><div class="eyebrow">YOUR ARVANO ACCOUNT</div><h2>Account & Sign In</h2></div>
-  <div class="panel" id="signedInPanel"></div>
-  <div class="panel" id="authPanel">
-   <h2 id="authTitle">Welcome Back</h2>
-   <p class="muted">Sign in to save your cart and manage orders.</p>
-   <form id="authForm" class="fields">
-    <div class="field full"><label>Email</label><input id="email" type="email" required autocomplete="email"></div>
-    <div class="field full"><label>Password</label><input id="password" type="password" required minlength="6" autocomplete="current-password"></div>
-    <div class="field full"><button class="btn primary" id="emailSubmit">Sign In</button></div>
-   </form>
-   <button class="btn" onclick="toggleAuth()">Create an account</button>
-   <button class="btn" onclick="resetPassword()">Forgot password?</button>
-   <button class="btn" style="margin-top:10px" onclick="googleLogin()">Continue with Google</button>
-   <div id="authMessage" class="notice hidden"></div>
-  </div>
- </section>
+    <section id="shopPage" class="page hidden">
+      <span class="eyebrow">EXPLORE ARVANO</span><h1>Shop collection</h1>
+      <div class="toolbar">
+        <input id="searchInput" placeholder="Search products..." oninput="renderProducts()">
+        <select id="categoryFilter" onchange="renderProducts()"><option value="">All categories</option></select>
+        <select id="sortFilter" onchange="renderProducts()">
+          <option value="newest">Newest</option><option value="low">Price: low to high</option>
+          <option value="high">Price: high to low</option><option value="name">Name A–Z</option>
+        </select>
+      </div>
+      <div id="allProducts" class="products"></div>
+    </section>
 
- <section id="cartPage" class="hidden">
-  <div class="sectionhead"><h2>Your Shopping Cart</h2><button class="plain" onclick="showPage('shop')">← Continue shopping</button></div>
-  <div class="panel" id="cartItems"></div>
-  <div class="panel">
-   <div class="rowitem"><span>Subtotal</span><strong id="subtotal">Rs. 0</strong></div>
-   <button class="btn primary" style="width:100%;margin-top:15px" onclick="beginCheckout()">Proceed to Checkout →</button>
-  </div>
- </section>
+    <section id="accountPage" class="page hidden">
+      <div class="auth-layout">
+        <div><span class="eyebrow">YOUR ARVANO ACCOUNT</span><h1>Shopping,<br><span>made personal.</span></h1><p class="muted">Sign in to place orders, track purchases and contact store support.</p></div>
+        <div class="panel">
+          <div class="tabs">
+            <button id="loginTab" class="active" onclick="setAuthMode('login')">Sign in</button>
+            <button id="registerTab" onclick="setAuthMode('register')">Create account</button>
+          </div>
+          <form id="authForm">
+            <label id="nameLabel" class="hidden">Full name<input id="authName" autocomplete="name"></label>
+            <label>Email<input id="authEmail" type="email" autocomplete="email" required></label>
+            <label>Password<input id="authPassword" type="password" minlength="6" required autocomplete="current-password"></label>
+            <button class="primary full" id="authSubmit">Sign in</button>
+          </form>
+          <button class="secondary full" onclick="googleSignIn()">Continue with Google</button>
+          <button class="link full" onclick="resetPassword()">Forgot password?</button>
+          <button class="link full" onclick="resendVerification()">Resend verification email</button>
+          <p id="accountStatus" class="muted small"></p>
+          <button id="signOutButton" class="danger full hidden" onclick="signOutUser()">Sign out</button>
+          <button id="adminButton" class="primary full hidden" onclick="showPage('admin')">Open admin dashboard ↗</button>
+        </div>
+      </div>
+    </section>
 
- <section id="checkoutPage" class="hidden">
-  <div class="sectionhead"><h2>Secure Checkout</h2></div>
-  <form id="checkoutForm" class="panel fields">
-   <div class="field full"><label>Full name</label><input id="shipName" required maxlength="100"></div>
-   <div class="field"><label>Phone number</label><input id="shipPhone" required type="tel" maxlength="25" placeholder="03XXXXXXXXX"></div>
-   <div class="field"><label>City</label><input id="shipCity" required maxlength="80"></div>
-   <div class="field full"><label>Complete delivery address</label><textarea id="shipAddress" required maxlength="500" rows="3"></textarea></div>
-   <div class="field full"><label>Payment Method</label>
-    <select id="paymentMethod" onchange="updateTotals()">
-     <option value="easypaisa">Easypaisa</option><option value="jazzcash">JazzCash</option>
-     <option value="bank">Bank Transfer</option><option value="cod">Cash on Delivery (COD)</option>
-    </select>
-   </div>
-   <div class="field full notice" id="paymentInfo"></div>
-   <div class="field full"><label>Payment reference (if already paid)</label><input id="paymentReference" maxlength="100" placeholder="Optional transaction reference"></div>
-   <div class="field full" id="receiptField"><label>Transfer receipt URL (optional)</label><input id="receiptUrl" type="url" maxlength="500" placeholder="Receipt link, if available"></div>
-   <div class="field full">
-    <div class="rowitem"><span>Products subtotal</span><strong id="checkoutSubtotal">Rs. 0</strong></div>
-    <div class="rowitem"><span>Delivery</span><strong id="deliveryTotal">Rs. 0</strong></div>
-    <div class="rowitem"><span>COD extra fee</span><strong id="codTotal">Rs. 0</strong></div>
-    <div class="rowitem"><strong>Total payable</strong><strong id="grandTotal" class="gradient">Rs. 0</strong></div>
-   </div>
-   <div class="field full"><button class="btn primary" id="placeOrderButton">Place Order</button></div>
-  </form>
- </section>
+    <section id="cartPage" class="page hidden">
+      <span class="eyebrow">YOUR SELECTION</span><h1>Shopping cart</h1><div id="cartContent"></div>
+    </section>
 
- <section id="ordersPage" class="hidden">
-  <div class="sectionhead"><h2>My Orders</h2></div><div class="panel" id="ordersList"></div>
- </section>
+    <section id="checkoutPage" class="page hidden">
+      <span class="eyebrow">ALMOST YOURS</span><h1>Checkout</h1><div id="checkoutContent"></div>
+    </section>
 
- <section id="supportPage" class="hidden">
-  <div class="sectionhead"><h2>Private Customer Support</h2></div>
-  <div class="panel">
-   <p class="muted">Send a private message to our support team. Sign in first to use this service.</p>
-   <form id="supportForm" class="fields">
-    <div class="field full"><label>Subject</label><input id="supportSubject" required maxlength="120"></div>
-    <div class="field full"><label>Message</label><textarea id="supportMessage" required maxlength="3000" rows="5"></textarea></div>
-    <div class="field full"><button class="btn primary">Send Message</button></div>
-   </form>
-   <div id="myTickets"></div>
-  </div>
- </section>
+    <section id="ordersPage" class="page hidden">
+      <span class="eyebrow">YOUR PURCHASES</span><h1>My orders</h1><div id="ordersContent"></div>
+    </section>
 
- <section id="adminPage" class="hidden">
-  <div class="sectionhead"><div><div class="eyebrow">RESTRICTED ACCESS</div><h2>Admin Dashboard</h2></div></div>
-  <div class="notice">Admin permissions must be assigned securely in Firestore. Normal customer registration never grants admin access.</div>
-  <div class="panel">
-   <h2>Store Settings</h2><p class="muted">Delivery and COD fee in PKR.</p>
-   <form id="settingsForm" class="fields">
-    <div class="field"><label>Delivery fee</label><input id="settingDelivery" type="number" min="0" max="100000" required></div>
-    <div class="field"><label>COD extra fee</label><input id="settingCod" type="number" min="0" max="100000" required></div>
-    <div class="field full"><button class="btn primary">Save Settings</button></div>
-   </form>
-  </div>
-  <div class="panel">
-   <h2>Add Product</h2>
-   <form id="productForm" class="fields">
-    <div class="field"><label>Product name</label><input id="pName" required maxlength="160"></div>
-    <div class="field"><label>Category</label><input id="pCategory" required maxlength="80"></div>
-    <div class="field"><label>Selling price (PKR)</label><input id="pPrice" type="number" min="1" required></div>
-    <div class="field"><label>Purchase cost (admin only)</label><input id="pCost" type="number" min="0" required></div>
-    <div class="field"><label>Stock quantity</label><input id="pStock" type="number" min="0" required></div>
-    <div class="field"><label>Image URL (HTTPS)</label><input id="pImage" type="url" required></div>
-    <div class="field full"><label>Description</label><textarea id="pDescription" rows="3" maxlength="3000"></textarea></div>
-    <div class="field full"><label><input id="pPublished" type="checkbox" checked style="width:auto"> Publish product immediately</label></div>
-    <div class="field full"><button class="btn primary">Save Product</button></div>
-   </form>
-  </div>
-  <div class="panel"><h2>Products</h2><div id="adminProducts"></div></div>
-  <div class="panel"><h2>All Orders</h2><div id="adminOrders" class="tablewrap"></div></div>
-  <div class="panel"><h2>Support Inbox</h2><div id="adminTickets"></div></div>
- </section>
-</main>
+    <section id="supportPage" class="page hidden">
+      <span class="eyebrow">WE'RE HERE TO HELP</span><h1>Customer support</h1>
+      <div class="columns">
+        <div class="panel"><h3>Send a message</h3>
+          <form id="supportForm">
+            <label>Subject<input id="supportSubject" required maxlength="100"></label>
+            <label>Message<textarea id="supportMessage" required maxlength="3000" rows="5"></textarea></label>
+            <button class="primary full">Send message</button>
+          </form>
+        </div>
+        <div><h3>Your conversations</h3><div id="supportList"></div></div>
+      </div>
+    </section>
 
-<footer><div class="wrap">△ ARVANO · Premium digital shopping experience · <span id="footerYear"></span></div></footer>
-<div class="bottomnav">
- <button onclick="showPage('home')">⌂<br>Home</button>
- <button onclick="showPage('shop')">⌕<br>Shop</button>
- <button onclick="showPage('cart')">▣<br>Cart</button>
- <button onclick="showPage('orders')">◷<br>Orders</button>
- <button onclick="showPage('account')">◉<br>Account</button>
-</div>
-<div id="toast" class="hidden" role="status"></div>
+    <section id="adminPage" class="page hidden">
+      <div class="heading"><div><span class="eyebrow">STORE CONTROL CENTER</span><h1>Admin dashboard</h1></div><span class="pill">ADMIN ACCESS</span></div>
+      <div id="adminStats" class="stats"></div>
+      <div class="admin-tabs">
+        <button class="secondary" onclick="adminTab('products')">Products</button>
+        <button class="secondary" onclick="adminTab('orders')">Orders & payments</button>
+        <button class="secondary" onclick="adminTab('support')">Support inbox</button>
+        <button class="secondary" onclick="adminTab('settings')">Store settings</button>
+      </div>
+      <div id="adminContent"></div>
+    </section>
+  </main>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
- getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
- signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,
- signOut,sendEmailVerification,sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
- getFirestore,collection,doc,getDoc,getDocs,addDoc,setDoc,
- updateDoc,deleteDoc,query,where,orderBy,limit,serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  <footer><a class="brand" href="#" onclick="showPage('home');return false">ARVANO<span>.</span></a><p>Thoughtfully selected. Made for your everyday.</p><small>© <span id="year"></span> ARVANO Store</small></footer>
 
-/* Firebase project configuration */
-const firebaseConfig={
- apiKey:"AIzaSyCjbNAglH6Rfjhsx1umqDYOobhHlVwClk4",
- authDomain:"arvano-store.firebaseapp.com",
- projectId:"arvano-store",
- storageBucket:"arvano-store.firebasestorage.app",
- messagingSenderId:"947800775390",
- appId:"1:947800775390:web:4142c2ad996114e1d1004f"
-};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app),db=getFirestore(app);
-const $=id=>document.getElementById(id);
-const money=n=>"Rs. "+Number(n||0).toLocaleString("en-PK");
-let user=null,profile=null,isAdmin=false,registerMode=false,products=[],settings={deliveryFee:250,codFee:300},category="All";
-let cart=JSON.parse(localStorage.getItem("arvano-cart")||"{}");
-let ticketsCache=[];
-
-function toast(message){
- $("toast").textContent=message;$("toast").classList.remove("hidden");
- setTimeout(()=>$("toast").classList.add("hidden"),3500);
-}
-function safeText(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function validImage(url){
- try{const u=new URL(url);return u.protocol==="https:"?u.href:"";}
- catch{return "";}
-}
-window.showPage=async name=>{
- document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));
- const page=$(name+"Page");if(page)page.classList.remove("hidden");
- if(name==="cart")renderCart();
- if(name==="checkout")updateTotals();
- if(name==="orders")await loadOrders();
- if(name==="account")renderAccount();
- if(name==="support")await loadTickets();
- if(name==="admin"){if(!isAdmin){toast("Admin access required.");showPage("home");return;}await loadAdmin();}
- if(name==="shop")renderProducts();
- window.scrollTo({top:0,behavior:"smooth"});
-};
-function persistCart(){localStorage.setItem("arvano-cart",JSON.stringify(cart));$("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0);}
-function subtotal(){return products.reduce((sum,p)=>sum+(Number(cart[p.id]||0)*Number(p.price||0)),0);}
-window.renderProducts=()=>{
- const search=($("search").value||"").toLowerCase();
- let list=products.filter(p=>p.published===true&&Number(p.stock||0)>0&&
- (category==="All"||p.category===category)&&
- (String(p.name||"").toLowerCase().includes(search)||String(p.category||"").toLowerCase().includes(search)));
- if($("sort").value==="low")list.sort((a,b)=>a.price-b.price);
- if($("sort").value==="high")list.sort((a,b)=>b.price-a.price);
- const html=list.map(p=>`
- <article class="product">
- <img src="${safeText(validImage(p.imageUrl)||"")}" alt="${safeText(p.name)}" loading="lazy" onerror="this.style.visibility='hidden'">
- <div class="productbody"><span class="tag">${safeText(p.category||"Featured")}</span>
- <div class="productname">${safeText(p.name)}</div>
- <div class="price">${money(p.price)}</div>
- <div class="muted" style="font-size:12px">${Number(p.stock)} in stock</div>
- <div class="productactions"><button class="btn" onclick="viewProduct('${p.id}')">Details</button>
- <button class="btn primary" onclick="addCart('${p.id}')">Add to Cart</button></div>
- </div></article>`).join("")||'<div class="panel muted">No products found. Admin can publish products from the dashboard.</div>';
- $("products").innerHTML=html;$("featured").innerHTML=list.slice(0,8).map(p=>`
- <article class="product"><img src="${safeText(validImage(p.imageUrl)||"")}" alt="${safeText(p.name)}" loading="lazy">
- <div class="productbody"><div class="productname">${safeText(p.name)}</div><div class="price">${money(p.price)}</div>
- <button class="btn primary" style="width:100%" onclick="addCart('${p.id}')">Add to Cart</button></div></article>`).join("");
-};
-window.viewProduct=id=>{const p=products.find(x=>x.id===id);if(p)toast(p.name+" — "+(p.description||"See product details in the catalogue."));};
-window.addCart=id=>{
- if(!user){toast("Please sign in before adding products.");showPage("account");return;}
- const p=products.find(x=>x.id===id);if(!p)return;
- if(Number(cart[id]||0)>=Number(p.stock)){toast("Stock limit reached.");return;}
- cart[id]=Number(cart[id]||0)+1;persistCart();toast("Added to your cart.");renderCart();
-};
-window.changeQty=(id,delta)=>{
- const p=products.find(x=>x.id===id);if(!p)return;
- const next=Number(cart[id]||0)+delta;
- if(next<=0)delete cart[id];else if(next<=Number(p.stock))cart[id]=next;
- else toast("Available stock limit reached.");
- persistCart();renderCart();
-};
-function renderCart(){
- persistCart();
- const items=Object.entries(cart).map(([id,qty])=>({p:products.find(p=>p.id===id),qty})).filter(x=>x.p);
- $("cartItems").innerHTML=items.map(({p,qty})=>`
- <div class="rowitem"><div><strong>${safeText(p.name)}</strong><div class="muted">${money(p.price)} each</div>
- <div class="productactions"><button class="btn" onclick="changeQty('${p.id}',-1)">−</button><span>${qty}</span><button class="btn" onclick="changeQty('${p.id}',1)">+</button></div></div>
- <strong>${money(p.price*qty)}</strong></div>`).join("")||'<p class="muted">Your cart is empty. Explore the collection to get started.</p>';
- $("subtotal").textContent=money(subtotal());
-}
-window.beginCheckout=()=>{
- if(!user){toast("Sign in before checkout.");showPage("account");return;}
- if(!Object.keys(cart).length){toast("Your cart is empty.");return;}
- showPage("checkout");
-};
-window.updateTotals=()=>{
- const method=$("paymentMethod").value,sub=subtotal();
- const cod=method==="cod"?Number(settings.codFee||300):0;
- const delivery=Number(settings.deliveryFee||0);
- $("checkoutSubtotal").textContent=money(sub);$("deliveryTotal").textContent=money(delivery);
- $("codTotal").textContent=money(cod);$("grandTotal").textContent=money(sub+delivery+cod);
- const instructions={
- easypaisa:"Easypaisa selected. Use the official store payment instructions provided by the administrator. Payment must be verified before the order is marked paid.",
- jazzcash:"JazzCash selected. Use the official store payment instructions provided by the administrator. Payment must be verified before the order is marked paid.",
- bank:"Bank Transfer selected. Follow the bank details supplied by the store administrator and submit your transfer reference.",
- cod:"Cash on Delivery selected. The COD extra fee is included in your total. Pay the displayed total when the parcel is delivered."
- };
- $("paymentInfo").textContent=instructions[method];
-};
-function renderAccount(){
- $("signedInPanel").innerHTML=user?`<strong>Signed in</strong><p>${safeText(user.email)}</p>
- <p class="muted">${isAdmin?"Administrator access":"Customer account"}</p>
- <button class="btn" onclick="logout()">Sign Out</button>
- ${isAdmin?'<button class="btn primary" onclick="showPage(\\'admin\\')">Open Admin Dashboard</button>':""}`:
- '<p class="muted">You are not signed in.</p>';
- $("authPanel").classList.toggle("hidden",!!user);
-}
-window.toggleAuth=()=>{registerMode=!registerMode;$("authTitle").textContent=registerMode?"Create Your Account":"Welcome Back";$("emailSubmit").textContent=registerMode?"Register":"Sign In";};
-$("authForm").addEventListener("submit",async e=>{
- e.preventDefault();const email=$("email").value.trim(),password=$("password").value;
- try{
-  if(registerMode){
-   const cred=await createUserWithEmailAndPassword(auth,email,password);
-   await setDoc(doc(db,"users",cred.user.uid),{uid:cred.user.uid,email,role:"user",createdAt:serverTimestamp()});
-   await sendEmailVerification(cred.user);
-   toast("Account created. Please verify your email before ordering.");
-  }else{
-   const cred=await signInWithEmailAndPassword(auth,email,password);
-   if(!cred.user.emailVerified){await signOut(auth);throw new Error("Verify your email first using the link sent to your inbox.");}
-  }
- }catch(err){$("authMessage").textContent=err.message;$("authMessage").classList.remove("hidden");}
-});
-window.googleLogin=async()=>{
- try{const cred=await signInWithPopup(auth,new GoogleAuthProvider());
- const ref=doc(db,"users",cred.user.uid),snap=await getDoc(ref);
- if(!snap.exists())await setDoc(ref,{uid:cred.user.uid,email:cred.user.email,role:"user",createdAt:serverTimestamp()});
- }catch(e){toast(e.message);}
-};
-window.resetPassword=async()=>{
- const email=$("email").value.trim();if(!email)return toast("Enter your email first.");
- try{await sendPasswordResetEmail(auth,email);toast("Password reset email sent.");}catch(e){toast(e.message);}
-};
-window.logout=async()=>{await signOut(auth);toast("Signed out.");showPage("home");};
-
-onAuthStateChanged(auth,async u=>{
- user=u;profile=null;isAdmin=false;
- if(u&&u.emailVerified){
-  try{
-   const snap=await getDoc(doc(db,"users",u.uid));
-   if(snap.exists()){profile=snap.data();isAdmin=profile.role==="admin";}
-  }catch(e){console.error(e);}
- }
- $("authButton").textContent=user?"Account":"Sign in";
- renderAccount();
- try{await loadProducts();}catch(e){console.error(e);toast("Could not load products. Check Firestore rules.");}
-});
-async function loadProducts(){
- const snap=await getDocs(query(collection(db,"products"),limit(200)));
- products=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.published===true);
- const cats=["All",...new Set(products.map(p=>p.category).filter(Boolean))];
- const categoryHtml=cats.map(c=>`<button class="chip ${c===category?"active":""}" onclick="chooseCategory('${safeText(c)}')">${safeText(c)}</button>`).join("");
- $("categories").innerHTML=categoryHtml;$("shopCategories").innerHTML=categoryHtml;
- renderProducts();renderCart();
-}
-window.chooseCategory=c=>{category=c;renderProducts();showPage("shop");};
-
-$("checkoutForm").addEventListener("submit",async e=>{
- e.preventDefault();
- if(!user||!user.emailVerified)return toast("Please sign in with a verified account.");
- const btn=$("placeOrderButton");btn.disabled=true;
- try{
-  const items=Object.entries(cart).map(([id,qty])=>{
-   const p=products.find(x=>x.id===id);
-   if(!p||!p.published||Number(qty)<1||Number(qty)>Number(p.stock))throw new Error("A product is unavailable or stock changed.");
-   return {productId:id,name:p.name,price:Number(p.price),quantity:Number(qty)};
-  });
-  if(!items.length)throw new Error("Your cart is empty.");
-  const method=$("paymentMethod").value;
-  const sub=items.reduce((s,i)=>s+i.price*i.quantity,0);
-  const cod=method==="cod"?Number(settings.codFee||300):0;
-  const total=sub+Number(settings.deliveryFee||0)+cod;
-  const order={
-   userId:user.uid,customerEmail:user.email,
-   customerName:$("shipName").value.trim(),phone:$("shipPhone").value.trim(),
-   city:$("shipCity").value.trim(),address:$("shipAddress").value.trim(),
-   items,subtotal:sub,deliveryFee:Number(settings.deliveryFee||0),codFee:cod,total,
-   paymentMethod:method,paymentReference:$("paymentReference").value.trim(),
-   receiptUrl:$("receiptUrl").value.trim(),
-   paymentStatus:method==="cod"?"cod_due":"pending_verification",
-   status:"Pending",createdAt:serverTimestamp()
-  };
-  const ref=await addDoc(collection(db,"orders"),order);
-  cart={};persistCart();toast("Order submitted: "+ref.id);
-  showPage("orders");
- }catch(err){toast(err.message||"Order could not be placed.");}
- finally{btn.disabled=false;}
-});
-async function loadOrders(){
- if(!user){$("ordersList").innerHTML='<p>Please sign in to see your orders.</p>';return;}
- try{
-  const snap=await getDocs(query(collection(db,"orders"),where("userId","==",user.uid),limit(50)));
-  $("ordersList").innerHTML=snap.docs.map(d=>{const o=d.data();return `
-   <div class="rowitem"><div><strong>Order #${d.id.slice(0,10)}</strong>
-   <div class="muted">${safeText(o.paymentMethod)} · ${safeText(o.paymentStatus)}</div>
-   <div class="status">${safeText(o.status)}</div></div><strong>${money(o.total)}</strong></div>`}).join("")||'<p class="muted">No orders yet.</p>';
- }catch(e){toast("Could not load orders.");}
-}
-$("supportForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!user||!user.emailVerified)return toast("Sign in first.");
- try{
-  await addDoc(collection(db,"supportTickets"),{userId:user.uid,email:user.email,
-   subject:$("supportSubject").value.trim(),message:$("supportMessage").value.trim(),
-   status:"open",reply:"",createdAt:serverTimestamp()});
-  $("supportForm").reset();toast("Message sent to support.");loadTickets();
- }catch(e){toast("Could not send message. Check permissions.");}
-});
-async function loadTickets(){
- if(!user)return;
- try{
-  const snap=await getDocs(query(collection(db,"supportTickets"),where("userId","==",user.uid),limit(30)));
-  $("myTickets").innerHTML=snap.docs.map(d=>{const t=d.data();return `
-   <div class="panel"><strong>${safeText(t.subject)}</strong><p>${safeText(t.message)}</p>
-   <div class="muted">Status: ${safeText(t.status)}</div>
-   ${t.reply?`<div class="notice"><strong>Store reply</strong><p>${safeText(t.reply)}</p></div>`:""}</div>`}).join("");
- }catch(e){console.error(e);}
-}
-async function loadAdmin(){
- if(!isAdmin)return;
- try{
-  const s=await getDoc(doc(db,"storeSettings","main"));
-  if(s.exists())settings={...settings,...s.data()};
-  $("settingDelivery").value=settings.deliveryFee;
-  $("settingCod").value=settings.codFee;
-  $("adminProducts").innerHTML=products.map(p=>`<div class="rowitem">
-   <span>${safeText(p.name)} · ${money(p.price)} · stock ${p.stock}</span>
-   <button class="btn" onclick="togglePublish('${p.id}',${!p.published})">${p.published?"Unpublish":"Publish"}</button>
-  </div>`).join("")||'<p>No products yet.</p>';
-  const os=await getDocs(query(collection(db,"orders"),limit(100)));
-  $("adminOrders").innerHTML='<table><thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody>'+
-   os.docs.map(d=>{const o=d.data();return `<tr><td>${d.id.slice(0,10)}</td><td>${safeText(o.customerName)}</td>
-   <td>${money(o.total)}</td><td>${safeText(o.paymentMethod)} / ${safeText(o.paymentStatus)}</td>
-   <td>${safeText(o.status)}</td><td><select onchange="updateOrderStatus('${d.id}',this.value)">
-   ${["Pending","Confirmed","Processing","Shipped","Delivered","Cancelled","Return Requested","Refunded"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}
-   </select><button class="btn" onclick="verifyPayment('${d.id}')">Mark Paid</button></td></tr>`}).join("")+
-   '</tbody></table>';
-  const ts=await getDocs(query(collection(db,"supportTickets"),limit(100)));
-  $("adminTickets").innerHTML=ts.docs.map(d=>{const t=d.data();return `<div class="panel">
-   <strong>${safeText(t.subject)}</strong><p>${safeText(t.message)}</p><div class="muted">${safeText(t.email||"")}</div>
-   <textarea id="reply-${d.id}" rows="2" placeholder="Write a reply">${safeText(t.reply||"")}</textarea>
-   <button class="btn primary" onclick="replyTicket('${d.id}')">Save Reply</button></div>`}).join("")||'<p>No messages.</p>';
- }catch(e){toast("Admin data load failed. Check Firestore rules.");}
-}
-$("settingsForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!isAdmin)return;
- try{
-  const deliveryFee=Number($("settingDelivery").value),codFee=Number($("settingCod").value);
-  if(deliveryFee<0||codFee<0)throw new Error("Fees cannot be negative.");
-  await setDoc(doc(db,"storeSettings","main"),{deliveryFee,codFee,updatedAt:serverTimestamp()});
-  settings={deliveryFee,codFee};updateTotals();toast("Settings saved.");
- }catch(e){toast(e.message);}
-});
-$("productForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!isAdmin)return;
- try{
-  const imageUrl=validImage($("pImage").value);if(!imageUrl)throw new Error("Use a valid HTTPS image URL.");
-  const price=Number($("pPrice").value),cost=Number($("pCost").value),stock=Number($("pStock").value);
-  if(price<=0||cost<0||stock<0)throw new Error("Check price, cost and stock.");
-  await addDoc(collection(db,"products"),{name:$("pName").value.trim(),
-   category:$("pCategory").value.trim(),price,cost,stock,imageUrl,
-   description:$("pDescription").value.trim(),published:$("pPublished").checked,
-   createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
-  $("productForm").reset();toast("Product saved.");await loadProducts();await loadAdmin();
- }catch(e){toast(e.message||"Product save failed.");}
-});
-window.togglePublish=async(id,published)=>{
- if(!isAdmin)return;
- try{await updateDoc(doc(db,"products",id),{published,updatedAt:serverTimestamp()});
- toast("Product updated.");await loadProducts();await loadAdmin();}
- catch(e){toast("Could not update product.");}
-};
-window.updateOrderStatus=async(id,status)=>{
- if(!isAdmin)return;
- try{await updateDoc(doc(db,"orders",id),{status,updatedAt:serverTimestamp()});toast("Order status updated.");}
- catch(e){toast("Could not update status.");}
-};
-window.verifyPayment=async id=>{
- if(!isAdmin)return;
- if(!confirm("Have you independently verified the payment?"))return;
- try{await updateDoc(doc(db,"orders",id),{paymentStatus:"paid",paymentVerifiedAt:serverTimestamp(),paymentVerifiedBy:user.uid});
- toast("Payment marked verified.");await loadAdmin();}
- catch(e){toast("Could not verify payment.");}
-};
-window.replyTicket=async id=>{
- if(!isAdmin)return;
- const reply=$("reply-"+id).value.trim();if(!reply)return toast("Enter a reply first.");
- try{await updateDoc(doc(db,"supportTickets",id),{reply,status:"replied",repliedAt:serverTimestamp()});
- toast("Reply saved.");await loadAdmin();}
- catch(e){toast("Could not save reply.");}
-};
-$("footerYear").textContent=new Date().getFullYear();
-</script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
