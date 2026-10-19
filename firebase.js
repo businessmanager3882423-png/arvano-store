@@ -1,22 +1,20 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getAuth, setPersistence, browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCjbNAglH6Rfjhsx1umqDYOobhHlVwClk4",
-  authDomain: "arvano-store.firebaseapp.com",
-  projectId: "arvano-store",
-  storageBucket: "arvano-store.firebasestorage.app",
-  messagingSenderId: "947800775390",
-  appId: "1:947800775390:web:4142c2ad996114e1d1004f"
+  apiKey: "AIzaSyAjTyUZyRNr8tOfdGDAmq_PdpBhzto5EM8",
+  authDomain: "arvano-store-7e7a3.firebaseapp.com",
+  projectId: "arvano-store-7e7a3",
+  storageBucket: "arvano-store-7e7a3.firebasestorage.app",
+  messagingSenderId: "7346796489",
+  appId: "1:7346796489:web:5372f6f30165a74a265a18"
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-
-setPersistence(auth, browserLocalPersistence).catch(console.error);
